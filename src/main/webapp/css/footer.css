@@ -1,0 +1,10 @@
+#footer{
+    position: relative;
+    bottom: 0px;
+    width: 98%;
+}
+#tail{
+    text-align: right;
+    float: right;
+    color: white;
+}

@@ -1,0 +1,58 @@
+<!-- <!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<!DOCTYPE html>
+<!-- <html xmlns="http://www.w3.org/1999/xhtml"> -->
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"> 
+		 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">  
+		 <meta http-equiv="X-UA-Compatible" content="IE=edge">  
+		 <meta content="e-Learning 使用户能够自由地分配学习时间，制定专属于自己的培训计划。" name="Description">
+		 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 	
+		 <meta content="企业内训解决方案，企业延展培训解决方案，移动学习解决方案，分布式部署解决方案" name="Keywords">
+		 <meta content="App" name="msApplication-ID">
+		 <meta name=”renderer” content=”ie-comp” >
+		 <meta name=”renderer” content=”ie-stand” >
+		 <meta http-equiv="X-UA-Compatible" content="IE=8"> 
+		 <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
+		 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		 <meta name="renderer" content="webkit|ie-stand|ie-comp" />             
+		 <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+		 <meta http-equiv="X-UA-Compatible" content="IE=11">   
+		 <meta name="renderer" content="webkit">
+		 <link href="css/countDown.css" rel="stylesheet" type="text/css" />
+		<title>快给老子学</title>
+
+
+	</head>
+	<body>
+		<div id="center-in-center">
+			<form style="text-align: center;" id="form">
+				<span id="currentTime"></span>
+				<br />
+				学习任务 : <input type="text" name="fname" style="height:25px;" id="setMission"/>
+				<br />
+				完成时间 :&nbsp;<input type="text" name="lname"  style="width:30px; height: 20px;" id="setHour" />&nbsp;小时
+				<input type="text" name="lname" style="width:30px; height: 20px;" id="setMin" />&nbsp;分钟
+				<input type="text" name="lname" style="width:30px; height: 20px;" id="setSec"/>&nbsp;秒
+				<input type="button" value="确认" id="button" style="height: 30px;" />
+			</form>
+			<div id="content">
+				<div style="word-break:normal;display:block;color:#ffffff; text-align: center;"  >
+					<span id="mission"></span>
+				</div>
+				<br />
+				<div id="time" style="text-align: center;">		
+					<span id="hour"></span>
+					<span id="hour_txt"></span>
+					<span id="min"></span>
+					<span id="min_txt"></span>
+					<span id="sec"></span>
+					<span id="sec_txt"></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/countDown.js" type="text/javascript"></script>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <!--导入angularJS文件-->
+    <script src="js/angular.min.js"></script>
+    <!--导入jquery-->
+    <script src="js/jquery-3.3.1.js"></script>
+    <!--    导入自己的center.css-->
+    <link type="text/css" rel="stylesheet" href="css/login.css">
+    <link type="text/css" rel="stylesheet" href="css/common.css">
+    <title>Come&nbsp;on</title>
+    <script>
+        function checkCheck(){
+            var check = $("#check").val();
+            var reg_check = /\S/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
+            var flag = reg_check.test(check);
+            if(flag){
+                $("#check").css("border","");
+            }else{
+                $("#check").css("border","1px solid red");
+            }
+            return flag;
+        }
+
+        $(function (){
+            $("#btn_sub").click(function(){
+                var flag = checkCheck();
+                if(flag){
+                    $.post("user/login",$("#loginForm").serialize(),function (data){
+                        if(data.flag){
+                            location.href="user.html";
+                        }else{
+                            $("#errorMsg").html(data.errorMsg);
+                        }
+                    });
+                }
+            });
+            $("#check").blur(checkCheck);
+        });
+
+    </script>
+</head>
+<body>
+<div class="login-box" id="center-in-center">
+    <div class="title">
+        <span>登录</span>
+    </div>
+    <div class="login_inner">
+        <!--登录错误提示消息-->
+        <div id="errorMsg" class="alert alert-danger"></div>
+        <form id="loginForm" action="" autocomplete="on"  method="post" accept-charset="utf-8">
+            <input type="hidden" name="action" value="login"/>
+            <input name="username" type="text" placeholder="请输入账号" autocomplete="on">
+            <input name="password" type="password" placeholder="请输入密码" autocomplete="off">
+            <div class="verify">
+                <input name="check" id="check" type="text" placeholder="请输入验证码" autocomplete="off">
+                <span><img src="checkCode" alt="" id="verify_img" onclick="changeCheckCode(this)"></span>
+                <script type="text/javascript">
+                    //图片点击事件
+                    function changeCheckCode(img) {
+                        img.src = "checkCode?" + new Date().getTime();
+                    }
+                </script>
+            </div>
+            <div class="submit_btn">
+                <button type="button" id="btn_sub" class="btn">登录</button>
+<!--                <div class="auto_login">-->
+<!--                    <input type="checkbox" name="" class="checkbox">-->
+<!--                    <span>自动登录</span>-->
+<!--                </div>-->
+            </div>
+        </form>
+        <div class="reg">没有账户？<a href="register.html">立即注册</a></div>
+    </div>
+</div>
+
+
+<script src="js/jquery-1.11.0.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

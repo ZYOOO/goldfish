@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>goldfish</title>
+    <link rel="stylesheet" href="css/goldfish.css" type="text/css">
+    <link rel="stylesheet" href="css/common.css" type="text/css">
+
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <!--导入angularJS文件-->
+    <script src="js/angular.min.js"></script>
+    <!--导入jquery-->
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function (){
+            var uid;
+            var vocabulary = "选择需要查询的日期";
+            $.post("user/findOne",{},function (data){
+                uid = data.uid;
+                displayReward();
+            });
+            function displayReward(){
+                $.post("goldfish/showReviewDateByUid",{uid:uid},function (data){
+                    //data -> ReviewDate
+                    var date_lis = "";
+                    var search_lis = "<option>选择需要查询的日期</option>";
+                    for (var value of data) {
+                        date_lis += "<li>"+value+"</li>";
+                        search_lis += "<option>"+value+"</option>"
+                    }
+                    $("#date").html(date_lis);
+                    $("#search").html(search_lis);
+                });
+            }
+            function displayVocabulary(data){
+                var voc_lis = "";
+                var err_lis = "";
+                for (var value  of data) {
+                    voc_lis += "<li><span>"+value.word+"</span> &nbsp; <span>"+value.meaning+"</span></li>"
+                    if (value.e_count > 3){
+                        err_lis += "<li><span>"+value.word+"</span> &nbsp; <span>"+value.meaning+"</span></li>";
+                    }
+                }
+                $("#vocabulary").html(voc_lis);
+                $("#difficulty").html(err_lis);
+            }
+            //根据日期查询
+            $("#search_btn").click(function (){
+                if($("#search").val() != "选择需要查询的日期"){
+                    $.post("vocabulary/searchVocabularyByUidAndDate",{uid:uid,date:$("#search").val()},function (data){
+                        //data -> List(vocabulary)
+                        vocabulary = $("#search").val();
+                        displayVocabulary(data);
+                    }) ;
+                }else {
+                    alert("请先选择需要查询的日期");
+                }
+            });
+            //根据艾宾浩斯遗忘曲线周期查询
+            $("#i_btn").click(function (){
+                $.post("vocabulary/searchVocabularyByI",{uid:uid},function (data){
+                    vocabulary = "I";
+                    displayVocabulary(data);
+                });
+            });
+            //开始复习,传输参数跳转
+            $("#review").click(function (){
+                url = "review.html?vocabulary="+vocabulary;//此处拼接内容
+                window.location.href = url;
+            });
+        });
+    </script>
+</head>
+<body>
+    <!--引入头部-->
+    <div id="header"></div>
+    <div id="searchBar">
+            <select id="search">
+            </select>
+            <input type="button" class="btn" id="search_btn" value="查询" >
+            <input type="button" class="btn" id="i_btn" value="自动按照艾宾浩斯遗忘曲线查询">
+    </div>
+    <div id="content">
+        <div id="left">
+            <div class="title">近30天输入记录</div>
+            <div>
+                <ul id="date">
+<!--                    <li>2021.02.02</li>-->
+                </ul>
+            </div>
+        </div>
+        <div id="right">
+            <div class="title">经常遗忘(3次以上)</div>
+            <ul id="difficulty">
+<!--                <li><span>apple</span> <span>苹果</span></li>-->
+            </ul>
+        </div>
+        <div id="center">
+            <div class="title">Vocabulary</div>
+            <ul id="vocabulary">
+<!--                <li><span>apple</span> <span>苹果</span></li>-->
+
+            </ul>
+            <div style="text-align: center">
+                <input type="button" id="input" onclick="javascript:location.href='input.html'" value="输入新单词">
+                <input type="button" id="review"  value="开始复习">
+            </div>
+        </div>
+
+    </div>
+
+    <!--引入尾部-->
+    <div id="footer"></div>
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="js/include.js"></script>
+</body>
+</html>

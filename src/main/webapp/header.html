@@ -1,0 +1,22 @@
+<!--头部-->
+<script>
+    var uid;
+    $(function (){
+        $.get("user/findOne",{},function (data){
+            var msg = data.name;
+            uid = data.uid;
+            $("#span_username").html(msg);
+        });
+    })
+</script>
+<link href="css/header.css" rel="stylesheet" type="text/css">
+<header id="header">
+    <div id="top">
+        <div >
+            <a id="home" href="user.html">Home</a>
+            <span id="span_username"></span>
+            <a href="javascript:location.href='exitServlet';" id="exit">exit</a>
+            <img src="img/avatar.png" id="avatar">
+        </div>
+    </div>
+</header>

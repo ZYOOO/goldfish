@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <!--导入angularJS文件-->
+    <script src="js/angular.min.js"></script>
+    <!--导入jquery-->
+    <script src="js/jquery-3.3.1.js"></script>
+    <!--    导入自己的center.css-->
+    <link type="text/css" rel="stylesheet" href="css/register.css">
+    <link type="text/css" rel="stylesheet" href="css/common.css">
+
+    <title>Come&nbsp;on</title>
+    <script>
+        /*
+        * 表单校验：
+        * 	1.用户名：单词字符，长度8到20位
+        * 	2.密码：单词字符，长度8到20位
+        *	3.email：邮件格式
+        * 	4.姓名：非空
+        * 	5.手机号：手机号格式
+        *	6.出生日期：非空
+        *	7.验证码：非空
+        * */
+        function checkUsername(){
+            var username = $("#username").val();
+            var reg_username = /^\w{8,20}$/;
+            var flag = reg_username.test(username);
+            if(flag){
+                $("#username").css("border","");
+            }else{
+                $("#username").css("border","1px solid red");
+            }
+            return flag;
+        }
+        function checkPassword(){
+            var password = $("#password").val();
+            var reg_password = /^\w{8,20}$/;
+            var flag = reg_password.test(password);
+            if(flag){
+                $("#password").css("border","");
+            }else{
+                $("#password").css("border","1px solid red");
+            }
+            return flag;
+        }
+
+        function checkEmail(){
+            var email = $("#email").val();
+            var reg_email = /^\w+@\w+\.\w+$/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
+            var flag = reg_email.test(email);
+            if(flag){
+                $("#email").css("border","");
+            }else{
+                $("#email").css("border","1px solid red");
+            }
+            return flag;
+        }
+
+        function checkName(){
+            var name = $("#name").val();
+            var reg_name = /\S/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
+            var flag = reg_name.test(name);
+            if(flag){
+                $("#name").css("border","");
+            }else{
+                $("#name").css("border","1px solid red");
+            }
+            return flag;
+        }
+
+        function checkTelephone(){
+            var telephone = $("#telephone").val();
+            var reg_telephone = /^1[3546789][0-9]{9}$/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
+            var flag = reg_telephone.test(telephone);
+            if(flag){
+                $("#telephone").css("border","");
+            }else{
+                $("#telephone").css("border","1px solid red");
+            }
+            return flag;
+        }
+
+        function checkBirthday(){
+            var birthday = $("#birthday").val();
+            var reg_birthday = /\S/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
+            var flag = reg_birthday.test(birthday);
+            if(flag){
+                $("#birthday").css("border","");
+            }else{
+                $("#birthday").css("border","1px solid red");
+            }
+            return flag;
+        }
+
+        function checkEmailCheck(){
+            var check = $("#emailCheck").val();
+            var reg_check = /\S/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
+            var flag = reg_check.test(check);
+            if(flag){
+                $("#emailCheck").css("border","");
+            }else{
+                $("#emailCheck").css("border","1px solid red");
+            }
+            return flag;
+        }
+        function checkCheck(){
+            var check = $("#check").val();
+            var reg_check = /\S/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
+            var flag = reg_check.test(check);
+            if(flag){
+                $("#check").css("border","");
+            }else{
+                $("#check").css("border","1px solid red");
+            }
+            return flag;
+        }
+
+        $(function (){
+
+            $("#reSend").click(function (){
+                var targetTime = new Date();
+                targetTime.setSeconds(targetTime.getSeconds() + 59);
+                count();
+                function count(){
+                    var reduce = targetTime.getTime() - Date.now();
+                    var second = Math.round(reduce / 1000 % 60);
+                    if(reduce > 0){
+                        setTimeout(count,1000);
+                        $("#reSend").attr("value",second.toString());
+                        $("#reSend").css("opacity","0.6");
+                        $("#reSend").css("cursor","not-allowed");
+                        $("#reSend").attr("disabled","true");
+
+                    }else{
+                        $("#reSend").attr("value","发送");
+                        $("#reSend").css("opacity","1");
+                        $("#reSend").css("cursor","allowed");
+                        $("#reSend").removeAttr("disabled");
+
+                    }
+                }
+            })
+
+            //表单提交时调用所有校验方法
+            $("#registerForm").submit(function (){
+                //发送数据到服务器 ajax； $(this).serialize()将表单对象转成jQuery调用serialize提交表单数据
+                if(checkUsername() && checkPassword() && checkEmail() && checkName() && checkTelephone() && checkBirthday() && checkEmailCheck() && checkCheck()){
+                    $.post("user/register",$(this).serialize(),function (data){
+                        //处理服务器响应的数据 data
+                        if(data.flag){
+                            alert("注册成功,点击确定跳转登陆页面");
+                            location.href="login.html";
+                        }else{
+                            $("#errorMsg").html(data.errorMsg);
+                        }
+
+
+                    });
+
+                }
+                //跳转页面
+                return false;
+                // return checkUsername() && checkPassword() && checkEmail() && checkName()
+                // 		&& checkTelephone() && checkBirthday() && checkCheck();
+            });
+            //组件失去焦点时，调用对应的校验方法
+            $("#username").blur(checkUsername);
+            $("#password").blur(checkPassword);//注意这里的checkPassword不要加括号
+            $("#email").blur(checkEmail);
+            $("#name").blur(checkName);
+            $("#telephone").blur(checkTelephone);
+            $("#birthday").blur(checkBirthday);
+            $("#emailCheck").blur(checkEmailCheck);
+            $("#check").blur(checkCheck);
+        });
+    </script>
+
+
+</head>
+<body>
+<div class="rg_layout" id="center-in-center">
+    <div class="rg_form clearfix">
+        <div class="rg_form_left">
+            <p>USER REGISTER</p>
+        </div>
+        <div class="rg_form_center">
+            <div id="errorMsg" style="color:red;text-align: center"></div>
+            <!--注册表单-->
+            <form id="registerForm" action="user">
+                <!--提交处理请求的标识符-->
+                <input type="hidden" name="action" value="register">
+                <table style="margin-top: 25px;">
+                    <tr>
+                        <td class="td_left">
+                            <label for="username">用户名</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="username" name="username" placeholder="请输入账号,8~20位">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="password">密码</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="password" name="password" placeholder="请输入密码,8~20位">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="email">Email</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="email" name="email" placeholder="请输入Email">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="name">姓名</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="name" name="name" placeholder="请输入真实姓名">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="telephone">手机号</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="telephone" name="telephone" placeholder="请输入您的手机号">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="sex">性别</label>
+                        </td>
+                        <td class="td_right gender">
+                            <input type="radio" id="sex" name="gender" value="男" checked> 男
+                            <input type="radio" name="gender" value="女"> 女
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="birthday">出生日期</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="date" id="birthday" name="birthday" placeholder="年/月/日">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="check" >邮箱激活码</label>
+                        </td>
+                        <td class="td_right check">
+                            <input type="text" id="emailCheck" name="emailCheck" class="emailCheck">
+                            <input type="button" class="btn" id="reSend" height="32px" onclick="emailCode()" value="发送">
+                            <script type="text/javascript">
+                                function emailCode(){
+                                    $.ajax({
+                                        url:"emailCodeServlet",
+                                        type:"post",
+                                        data:{"email":$("#email").val()}
+                                    });
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="check">验证码</label>
+                        </td>
+                        <td class="td_right check">
+                            <input type="text" id="check" name="check" class="check">
+                            <img src="checkCode" height="32px" alt="" onclick="changeCheckCode(this)">
+                            <script type="text/javascript">
+                                //图片点击事件
+                                function changeCheckCode(img) {
+                                    img.src = "checkCode?" + new Date().getTime();
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                        </td>
+                        <td class="td_right submit">
+                            <input type="submit" class="btn" value="注册">
+<!--                            <span id="msg" style="color: red;"></span>-->
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="rg_form_right">
+            <p>
+                已有账号？
+                <a href="login.html">立即登录</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/jquery-1.11.0.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>review</title>
+    <link rel="stylesheet" type="text/css" href="css/review.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <!--导入angularJS文件-->
+    <script src="js/angular.min.js"></script>
+    <!--导入jquery-->
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function (){
+            var uid;
+            var vocabulary = getQueryVariable("vocabulary");
+            $.post("user/findOne",{},function (data){
+                uid = data.uid;
+                if(vocabulary == "I"){
+                    $.post("vocabulary/searchVocabularyByI",{uid:uid},function (data){
+                        //data -> List(vocabulary)
+                        display(data);
+                    });
+                }else {
+                    if(vocabulary != "选择需要查询的日期"){
+                        $.post("vocabulary/searchVocabularyByUidAndDate",{uid:uid,date:vocabulary},function (data){
+                            //data -> List(vocabulary)
+                            display(data);
+                        }) ;
+                    }else {
+                        alert("请先选择需要查询的日期");
+                    }
+                }
+            });
+            //根据data渲染
+            function display(data){
+                var lis = "";
+                for (var value of data) {
+                    lis += "<li><span class=\"en_txt\">"+value.word+"</span><span class=\"cn_txt\">"+value.meaning+"</span> <input type=\"button\" class=\"error_btn\" value=\"不会\"> <input type=\"button\" class=\"del_btn\" value=\"删除\"></li>"
+                }
+                $("#output").html(lis);
+            }
+            //获取参数
+            function getQueryVariable(variable)
+            {
+                var query = window.location.search.substring(1);
+                var vars = query.split("&");
+                for (var i=0;i<vars.length;i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == variable){return pair[1];}
+                }
+                return(false);
+            }
+
+            $("#en_invisible").click(function (){
+              $(".en_txt").fadeToggle();
+              if($("#en_invisible").val() == "隐藏英文"){
+                  $("#en_invisible").attr("value","显示英文");
+              }else{
+                  $("#en_invisible").attr("value","隐藏英文");
+              }
+            })
+            $("#cn_invisible").click(function (){
+                $(".cn_txt").fadeToggle();
+                if($("#cn_invisible").val() == "隐藏中文"){
+                    $("#cn_invisible").attr("value","显示中文");
+                }else{
+                    $("#cn_invisible").attr("value","隐藏中文");
+                }
+            })
+            $("#finish").click(function (){
+                if (!alert("What everyone you can do, just do it!")) {
+                    location.href="goldfish.html";
+                }
+            })
+
+        })
+    </script>
+</head>
+<body>
+<!--引入头部-->
+<div id="header"></div>
+<div id="content">
+<!--    <div id="left"></div>-->
+<!--    <div id="right"></div>-->
+    <div id="center">
+        <ul id="output">
+<!--            <li><span class="en_txt">Apple</span><span class="cn_txt">苹果</span> <input type="button" class="error_btn" value="不会"> <input type="button" class="del_btn" value="删除"></li>-->
+        </ul>
+        <div id="btns">
+            <input type="button" value="隐藏英文" class="btn" id="en_invisible">
+            <input type="button" value="完成复习" class="btn" id="finish">
+            <input type="button" value="隐藏中文" class="btn" id="cn_invisible">
+        </div>
+    </div>
+</div>
+
+
+<!--引入尾部-->
+<div id="footer"></div>
+<!--导入布局js，共享header和footer-->
+<script type="text/javascript" src="js/include.js"></script>
+</body>
+</html>

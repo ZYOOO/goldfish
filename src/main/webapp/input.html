@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>input</title>
+    <link rel="stylesheet" type="text/css" href="css/input.css">
+    <link href="css/common.css" rel="stylesheet" type="text/css">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="0">
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <!--导入angularJS文件-->
+    <script src="js/angular.min.js"></script>
+    <!--导入jquery-->
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function (){
+            var flag = true;
+            var i = 12;
+            var uid;
+            $.post("user/findOne",{},function (data){
+                uid = data.uid;
+                $("#uid").attr("value",uid);
+            });
+            add();
+            function add (){
+                if (flag){
+                    var ens = $(".en_txt");
+                    if(ens[ens.length-2].value != 0){
+                        var li = "<li><input class=\"en_txt\" name=\"en"+(++i)+"\" type=\"text\"><input class=\"cn_txt\" name=\"cn"+(++i)+"\" type=\"text\"></li>"
+                        $("#input_ul").append(li);
+                    }
+                    setTimeout(add,100);
+                }
+            }
+            $("#submit").click(function (){
+                flag = false;
+                $.post("vocabulary/addVocabulary",$("#input_form").serialize(),function (data) {
+                    if(data){
+                        alert("提交成功");
+                        location.href="goldfish.html";
+                    }else {
+                        alert("提交失败");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!--引入头部-->
+    <div id="header"></div>
+    <div id="content">
+        <div id="left"></div>
+        <div id="right"></div>
+        <div id="center">
+            <span>Tips：按Tab切换输入框，左侧为英文输入框，右侧为中文输入框</span>
+            <form id="input_form" autocomplete="off">
+                <input type="hidden" name="uid" id="uid"/>
+                <ul id="input_ul">
+                    <li><input class="en_txt" name="en1" type="text"><input class="cn_txt" name="cn1" type="text"></li>
+                    <li><input class="en_txt" name="en2" type="text"><input class="cn_txt" name="cn2" type="text"></li>
+                    <li><input class="en_txt" name="en3" type="text"><input class="cn_txt" name="cn3" type="text"></li>
+                    <li><input class="en_txt" name="en4" type="text"><input class="cn_txt" name="cn4" type="text"></li>
+                    <li><input class="en_txt" name="en5" type="text"><input class="cn_txt" name="cn5" type="text"></li>
+                    <li><input class="en_txt" name="en6" type="text"><input class="cn_txt" name="cn6" type="text"></li>
+                    <li><input class="en_txt" name="en7" type="text"><input class="cn_txt" name="cn7" type="text"></li>
+                    <li><input class="en_txt" name="en8" type="text"><input class="cn_txt" name="cn8" type="text"></li>
+                    <li><input class="en_txt" name="en9" type="text"><input class="cn_txt" name="cn9" type="text"></li>
+                    <li><input class="en_txt" name="en10" type="text"><input class="cn_txt" name="cn10" type="text"></li>
+                    <li><input class="en_txt" name="en11" type="text"><input class="cn_txt" name="cn11" type="text"></li>
+                    <li><input class="en_txt" name="en12" type="text"><input class="cn_txt" name="cn12" type="text"></li>
+
+                </ul>
+            </form>
+            <input type="submit" class="btn" id="submit" value="提交">
+        </div>
+    </div>
+
+
+
+    <!--引入尾部-->
+    <div id="footer" ></div>
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="js/include.js"></script>
+</body>
+</html>
