@@ -23,21 +23,18 @@ public class ScheduleServlet extends BaseServlet {
         schedule.setT_start(addZero(request.getParameter("start")));
         schedule.setT_end(addZero(request.getParameter("end")));
         schedule.setDailyMission(request.getParameter("dailyMission"));
-        System.out.println(schedule);
         boolean flag = scheduleService.setSchedule(schedule);
         writeValue(flag,response);
     }
     public void deleteScheduleBySid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String sid = request.getParameter("value");
         sid = sid.substring(1);
-        System.out.println(sid);
         boolean flag = scheduleService.deleteScheduleBySid(Integer.parseInt(sid));
         writeValue(flag,response);
     }
     public void findScheduleByUid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         List<Schedule> list = scheduleService.findScheduleByUid(Integer.parseInt(request.getParameter("uid")));
         writeValue(list,response);
-        System.out.println(list);
     }
     private static String addZero(String str){
         String ans = "";
@@ -54,6 +51,9 @@ public class ScheduleServlet extends BaseServlet {
                     ans += ":";
                 }
             }
+        }
+        if(split.length == 1){
+            ans += "00";
         }
         return ans;
     }

@@ -19,13 +19,11 @@ public class MissionServlet extends BaseServlet {
     public void findMissionByUid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         List<Mission> list = missionService.findMissionByUid(Integer.parseInt(request.getParameter("uid")));
         writeValue(list,response);
-        System.out.println(list);
     }
     public void setMission(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Mission mission = new Mission();
         mission.setUid(Integer.parseInt(request.getParameter("uid")));
         mission.setMission(request.getParameter("mission"));
-
         boolean flag = missionService.setMission(mission);
         writeValue(flag,response);
     }

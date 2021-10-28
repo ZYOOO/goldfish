@@ -130,20 +130,12 @@
         $(function () {
             $("#selectMission").click(function () {
                 if ($("#selectMission").val() == "选择") {
-                    $("#selectMission").attr("value", "完成");
-                    $(".mis_box").show(250);
-                } else {
-                    $("#selectMission").attr("value", "选择");
-                    $(".mis_box").hide(250);
+                    $(".mis_box").toggle(250);
                 }
             });
             $("#selectSchedule").click(function () {
                 if ($("#selectSchedule").val() == "选择") {
-                    $("#selectSchedule").attr("value", "完成");
-                    $(".schedule_box").show(250);
-                } else {
-                    $("#selectSchedule").attr("value", "选择");
-                    $(".schedule_box").hide(250);
+                    $(".schedule_box").toggle(250);
                 }
             });
             $("#selectAllSchedule").click(function (){
