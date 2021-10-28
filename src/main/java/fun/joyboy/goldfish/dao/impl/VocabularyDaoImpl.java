@@ -54,4 +54,20 @@ public class VocabularyDaoImpl implements VocabularyDao {
         System.out.println(list);
         return list;
     }
+
+    @Override
+    public boolean unknown(int vid) {
+        String sql = "select e_count from vocabulary where vid = ?";
+        int e_count = template.queryForObject(sql,Integer.class,vid);
+        sql = "update vocabulary set e_count = ? where vid = ?";
+        template.update(sql,++e_count,vid);
+        return true;
+    }
+
+    @Override
+    public boolean changeStatus(int vid) {
+        String sql = "update vocabulary set status = 0 where vid = ?";
+        template.update(sql,vid);
+        return true;
+    }
 }

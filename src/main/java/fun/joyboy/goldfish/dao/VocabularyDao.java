@@ -11,7 +11,11 @@ import java.util.List;
 public interface VocabularyDao {
     public boolean add(Vocabulary vocabulary);
 
-    List<Vocabulary> searchByUidAndDate(int uid, String date);
+    public List<Vocabulary> searchByUidAndDate(int uid, String date);
 
-    List<Vocabulary> searchByI(int uid);
+    public List<Vocabulary> searchByI(int uid);
+
+    public boolean unknown(int vid);
+
+    public boolean changeStatus(int vid);
 }

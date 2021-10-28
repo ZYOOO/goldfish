@@ -11,7 +11,11 @@ import java.util.List;
 public interface VocabularyService {
     public boolean addVocabulary(Vocabulary vocabulary);
 
-    List<Vocabulary> searchVocabularyByUidAndDate(int uid, String date);
+    public List<Vocabulary> searchVocabularyByUidAndDate(int uid, String date);
 
-    List<Vocabulary> searchVocabularyByI(int uid);
+    public List<Vocabulary> searchVocabularyByI(int uid);
+
+    public boolean unknown(int vid);
+
+    public boolean changeStatus(int vid);
 }

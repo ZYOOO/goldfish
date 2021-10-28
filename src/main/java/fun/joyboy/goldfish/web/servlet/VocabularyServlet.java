@@ -53,4 +53,19 @@ public class VocabularyServlet extends BaseServlet{
         List<Vocabulary> list  = vocabularyService.searchVocabularyByI(uid);
         writeValue(list,response);
     }
+    public void unknown(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        int vid = Integer.parseInt(request.getParameter("vid"));
+        boolean flag = vocabularyService.unknown(vid);
+        writeValue(flag,response);
+    }
+    //伪删除,只是改变状态不显示
+    public void changeStatusByVid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        int vid = Integer.parseInt(request.getParameter("vid"));
+        boolean flag = vocabularyService.changeStatus(vid);
+        writeValue(flag,response);
+    }
+    //真正从数据库删除
+    public void deleteVocabularyByVid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+    }
 }

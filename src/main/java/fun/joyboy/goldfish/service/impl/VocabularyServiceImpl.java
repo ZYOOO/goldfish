@@ -29,4 +29,14 @@ public class VocabularyServiceImpl implements VocabularyService {
         return vocabularyDao.searchByI(uid);
     }
 
+    @Override
+    public boolean unknown(int vid) {
+        return vocabularyDao.unknown(vid);
+    }
+
+    @Override
+    public boolean changeStatus(int vid) {
+        return vocabularyDao.changeStatus(vid);
+    }
+
 }

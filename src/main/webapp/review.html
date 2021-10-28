@@ -18,6 +18,39 @@
             var vocabulary = getQueryVariable("vocabulary");
             $.post("user/findOne",{},function (data){
                 uid = data.uid;
+                load();
+            });
+            function display(data){
+                var lis = "";
+                for (var value of data) {
+                    lis += "<li><span class=\"en_txt\">"+value.word+"</span><span class=\"cn_txt\">"+value.meaning+"</span> <input type=\"button\" class=\"error_btn\" name="+value.vid+" value=\"不会\"> <input type=\"button\" name="+value.vid+" class=\"del_btn\" value=\"删除\"></li>"
+                }
+                $("#output").html(lis);
+                //不会按钮轮询
+                $(".error_btn").each(function (){
+                    $(this).click(function (){
+                        $.post("vocabulary/unknown",{vid:this.name},function (data){
+                            if(!data){
+                                alert("更新数据库失败");
+                            }
+                        });
+                    });
+                })
+                //删除按钮轮询
+                $(".del_btn").each(function (){
+                    $(this).click(function (){
+                        $.post("vocabulary/changeStatusByVid",{vid:this.name},function (data){
+                            if(data){
+                                load();
+                            }else{
+                                alert("删除失败");
+                            }
+                        });
+                    });
+                })
+            }
+            //根据data渲染
+            function load(){
                 if(vocabulary == "I"){
                     $.post("vocabulary/searchVocabularyByI",{uid:uid},function (data){
                         //data -> List(vocabulary)
@@ -27,21 +60,17 @@
                     if(vocabulary != "选择需要查询的日期"){
                         $.post("vocabulary/searchVocabularyByUidAndDate",{uid:uid,date:vocabulary},function (data){
                             //data -> List(vocabulary)
-                            display(data);
+                            display(data);;
                         }) ;
                     }else {
                         alert("请先选择需要查询的日期");
                     }
                 }
-            });
-            //根据data渲染
-            function display(data){
-                var lis = "";
-                for (var value of data) {
-                    lis += "<li><span class=\"en_txt\">"+value.word+"</span><span class=\"cn_txt\">"+value.meaning+"</span> <input type=\"button\" class=\"error_btn\" value=\"不会\"> <input type=\"button\" class=\"del_btn\" value=\"删除\"></li>"
-                }
-                $("#output").html(lis);
+
             }
+
+
+
             //获取参数
             function getQueryVariable(variable)
             {
@@ -87,7 +116,7 @@
 <!--    <div id="right"></div>-->
     <div id="center">
         <ul id="output">
-<!--            <li><span class="en_txt">Apple</span><span class="cn_txt">苹果</span> <input type="button" class="error_btn" value="不会"> <input type="button" class="del_btn" value="删除"></li>-->
+<!--            <li><span class="en_txt">Apple</span><span class="cn_txt">苹果</span> <input type="button" class="error_btn"  value="2"> <input type="button" class="del_btn" value="2"></li>-->
         </ul>
         <div id="btns">
             <input type="button" value="隐藏英文" class="btn" id="en_invisible">
