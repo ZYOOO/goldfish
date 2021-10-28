@@ -32,15 +32,23 @@ public class MissionDaoImpl implements MissionDao {
 
     @Override
     public boolean set(Mission mission) {
-        String sql = "insert into tab_missions(uid,mission) values(?,?)";
-        template.update(sql,mission.getUid(),mission.getMission());
+        try {
+            String sql = "insert into tab_missions(uid,mission) values(?,?)";
+            template.update(sql,mission.getUid(),mission.getMission());
+        }catch (Exception e){
+            return false;
+        }
         return true;
     }
 
     @Override
     public boolean deleteByMid(int mid) {
-        String sql = "delete from tab_missions where mid = ?";
-        template.update(sql,mid);
+        try {
+            String sql = "delete from tab_missions where mid = ?";
+            template.update(sql,mid);
+        }catch (Exception e){
+            return false;
+        }
         return true;
     }
 }

@@ -28,7 +28,10 @@ public class ScheduleServlet extends BaseServlet {
         writeValue(flag,response);
     }
     public void deleteScheduleBySid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        boolean flag = scheduleService.deleteScheduleBySid(Integer.parseInt(request.getParameter("value")));
+        String sid = request.getParameter("value");
+        sid = sid.substring(1);
+        System.out.println(sid);
+        boolean flag = scheduleService.deleteScheduleBySid(Integer.parseInt(sid));
         writeValue(flag,response);
     }
     public void findScheduleByUid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{

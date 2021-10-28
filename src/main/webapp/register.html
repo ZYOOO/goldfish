@@ -207,7 +207,7 @@
                             <label for="password">密码</label>
                         </td>
                         <td class="td_right">
-                            <input type="text" id="password" name="password" placeholder="请输入密码,8~20位">
+                            <input type="text" id="password" name="password" placeholder="请输入密码,8~20位" autocomplete="off">
                         </td>
                     </tr>
                     <tr>
@@ -256,7 +256,7 @@
                             <label for="check" >邮箱激活码</label>
                         </td>
                         <td class="td_right check">
-                            <input type="text" id="emailCheck" name="emailCheck" class="emailCheck">
+                            <input type="text" id="emailCheck" name="emailCheck" class="emailCheck" autocomplete="off">
                             <input type="button" class="btn" id="reSend" height="32px" onclick="emailCode()" value="发送">
                             <script type="text/javascript">
                                 function emailCode(){
@@ -274,7 +274,7 @@
                             <label for="check">验证码</label>
                         </td>
                         <td class="td_right check">
-                            <input type="text" id="check" name="check" class="check">
+                            <input type="text" id="check" name="check" class="check" autocomplete="off">
                             <img src="checkCode" height="32px" alt="" onclick="changeCheckCode(this)">
                             <script type="text/javascript">
                                 //图片点击事件

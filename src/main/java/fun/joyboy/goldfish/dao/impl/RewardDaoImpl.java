@@ -19,17 +19,19 @@ public class RewardDaoImpl implements RewardDao {
 
     @Override
     public List<String> findByUid(int uid) {
-        String sql = "select distinct r_date from tab_date where uid = ?";
-        List<Map<String, Object>> list_map;
         List<String> list = new ArrayList<String>();
-        list_map = template.queryForList(sql,uid);
-        for (Map<String, Object> map:list_map) {
-            list.add((String) map.get("r_date"));
-            if(list.size() == 30){
-                break;
+        try {
+            String sql = "select distinct r_date from tab_date where uid = ?";
+            List<Map<String, Object>> list_map;
+            list_map = template.queryForList(sql,uid);
+            for (Map<String, Object> map:list_map) {
+                list.add((String) map.get("r_date"));
             }
+            Collections.reverse(list);
+        }catch (Exception e){
+
         }
-        Collections.reverse(list);
         return list;
+
     }
 }

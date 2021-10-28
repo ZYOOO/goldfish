@@ -19,9 +19,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean save(User user) {
-        String sql = "insert into user(username,password,name,birthday,gender,telephone,email) values(?,?,?,?,?,?,?)";
-        template.update(sql,user.getUsername(),user.getPassword(),user.getName(),user.getBirthday(),
-                user.getGender(),user.getTelephone(),user.getEmail());
+        try {
+            String sql = "insert into user(username,password,name,birthday,gender,telephone,email) values(?,?,?,?,?,?,?)";
+            template.update(sql,user.getUsername(),user.getPassword(),user.getName(),user.getBirthday(),
+                    user.getGender(),user.getTelephone(),user.getEmail());
+        }catch (Exception e){
+            return false;
+        }
         return true;
     }
 

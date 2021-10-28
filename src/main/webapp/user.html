@@ -11,9 +11,8 @@
     <script src="js/angular.min.js"></script>
     <!--导入jquery-->
     <script src="js/jquery-3.3.1.js"></script>
-    <script src="js/user.js" type="application/javascript"></script>
     <script type="text/javascript">
-
+        //事件
         $(function (){
             var uid;
             $.post("user/findOne",{},function (data){
@@ -25,20 +24,44 @@
                 $.post("mission/findMissionByUid",{uid:uid},function (data){
                     var lis = "";
                     for (var value of data) {
-                        var li = "<li><input type=\"checkbox\" class=\"mis_box\" disabled value= "+value.mid+" >"+value.mission+"</li>"
+                        var li = "<li id=\"lm" + value.mid + "\" value=\""+value.mid+"\"><input type=\"checkbox\" class=\"mis_box\"  value=\"m" + value.mid + "\" id=\"m" + value.mid + "\">"+value.mission+"</li>"
                         lis += li;
                     }
                     $("#missions").html(lis);
+                    $(".mis_box").hide(250);
+                    $("li").each(function () {
+                        $(this).click(function () {
+                            if($("#m"+this.value).is(":checked")){
+                                $("#m"+this.value).hide(250);
+                                $("#m"+this.value).attr("checked",false);
+                            }else{
+                                $("#m"+this.value).show(250);
+                                $("#m"+this.value).attr("checked",true);
+                            }
+                        })
+                    })
                 });
             }
             function displaySchedule(){
                 $.post("schedule/findScheduleByUid",{uid:uid},function (data){
                     var lis = "";
                     for (var value of data) {
-                        var li = "<li><input type=\"checkbox\" class=\"schedule_box\" disabled value= "+value.sid+" >"+value.t_start+'~'+value.t_end+'&nbsp;'+value.dailyMission+"</li>"
+                        var li = "<li id=\"ls" + value.sid + "\" value=\""+value.sid+"\"><input type=\"checkbox\" class=\"schedule_box\" value=\"s" + value.sid + "\" id=\"s" + value.sid + "\">"+value.t_start+'~'+value.t_end+'&nbsp;'+value.dailyMission+"</li>"
                         lis += li;
                     }
                     $("#schedule").html(lis);
+                    $(".schedule_box").hide(250);
+                    $("li").each(function () {
+                        $(this).click(function () {
+                            if($("#s"+this.value).is(":checked")){
+                                $("#s"+this.value).hide(250);
+                                $("#s"+this.value).attr("checked",false);
+                            }else{
+                                $("#s"+this.value).show(250);
+                                $("#s"+this.value).attr("checked",true);
+                            }
+                        })
+                    })
                 });
             }
             $("#settingMission").click(function (){
@@ -58,10 +81,11 @@
 
             $("#deleteMission").click(function (){
                 $("input[class='mis_box']:checked")
-                    .each(function(){
-                    $.post("mission/deleteMissionByMid",{value:this.value},function (data){
+                    .each(function(i,n){
+                    $.post("mission/deleteMissionByMid",{value:n.value},function (data){
                         if(data){
-                            displayMission();
+                            // displayMission();
+                            $("#l"+n.value).remove();
                         }
                     });
                 });
@@ -91,17 +115,64 @@
 
             $("#deleteSchedule").click(function (){
                 $("input[class='schedule_box']:checked")
-                    .each(function(){
-                        $.post("schedule/deleteScheduleBySid",{value:this.value},function (data){
+                    .each(function(i,n){
+                        $.post("schedule/deleteScheduleBySid",{value:n.value},function (data){
                             if(data){
-                                displaySchedule();
+                                // displaySchedule();
+                                $("#l"+n.value).remove();
                             }
                         });
                     });
             })
         })
 
+        //样式事件
+        $(function () {
+            $("#selectMission").click(function () {
+                if ($("#selectMission").val() == "选择") {
+                    $("#selectMission").attr("value", "完成");
+                    $(".mis_box").show(250);
+                } else {
+                    $("#selectMission").attr("value", "选择");
+                    $(".mis_box").hide(250);
+                }
+            });
+            $("#selectSchedule").click(function () {
+                if ($("#selectSchedule").val() == "选择") {
+                    $("#selectSchedule").attr("value", "完成");
+                    $(".schedule_box").show(250);
+                } else {
+                    $("#selectSchedule").attr("value", "选择");
+                    $(".schedule_box").hide(250);
+                }
+            });
+            $("#selectAllSchedule").click(function (){
+                if ($("#selectAllSchedule").val() == "全选"){
+                    $(".schedule_box").show(250);
+                    $("#selectAllSchedule").attr("value","取消全选");
+                    $(".schedule_box").attr("checked",true);
 
+                }else{
+                    $("#selectAllSchedule").attr("value","全选");
+                    $(".schedule_box").attr("checked",false);
+                    $(".schedule_box").hide(250);
+
+                }
+            })
+            $("#selectAllMission").click(function (){
+                if ($("#selectAllMission").val() == "全选"){
+                    $(".mis_box").show(250);
+                    $("#selectAllMission").attr("value","取消全选");
+                    $(".mis_box").attr("checked",true);
+
+                }else{
+                    $("#selectAllMission").attr("value","全选");
+                    $(".mis_box").attr("checked",false);
+                    $(".mis_box").hide(250);
+
+                }
+            })
+        })
     </script>
 </head>
 <body>
@@ -131,8 +202,7 @@
         <div class="right">
             <div class="title">schedule</div>
 				<ul id="schedule">
-					<li><input type="checkbox" class="schedule_box" disabled>12:00~13:00 读书读书读书</li>
-
+<!--					<li><input type="checkbox" class="schedule_box" disabled>12:00~13:00 读书读书读书</li>-->
                 </ul>
             <div id="setSchedule">
                 <div >

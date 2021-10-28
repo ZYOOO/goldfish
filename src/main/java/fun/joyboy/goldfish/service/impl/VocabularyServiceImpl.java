@@ -39,4 +39,24 @@ public class VocabularyServiceImpl implements VocabularyService {
         return vocabularyDao.changeStatus(vid);
     }
 
+    @Override
+    public List<Vocabulary> searchAllVocabularyByUid(int uid) {
+        return vocabularyDao.searchAllByUid(uid);
+    }
+
+    @Override
+    public List<Vocabulary> searchAllForgetByUid(int uid) {
+        return vocabularyDao.searchAllForgetByUid(uid);
+    }
+
+    @Override
+    public boolean deleteVocabularyByVid(int vid) {
+        return vocabularyDao.deleteByVid(vid);
+    }
+
+    @Override
+    public boolean recoverVocabularyByVid(int vid) {
+        return vocabularyDao.recoverByVid(vid);
+    }
+
 }

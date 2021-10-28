@@ -22,10 +22,10 @@ public class BaseServlet extends HttpServlet {
         //完成方法分发
         //1.获取请求路径
         String uri = req.getRequestURI();
-        System.out.println("请求uri:"+uri);
+//        System.out.println("请求uri:"+uri);
         //2.获取方法名称
         String methodName = uri.substring(uri.lastIndexOf('/') + 1);
-        System.out.println("方法名称："+methodName);
+//        System.out.println("方法名称："+methodName);
         //3.获取方法对象method
         //this 代表调用的对象
         try {

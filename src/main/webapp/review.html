@@ -14,12 +14,9 @@
     <script src="js/jquery-3.3.1.js"></script>
     <script>
         $(function (){
-            var uid;
+            var uid = getQueryVariable("uid");
             var vocabulary = getQueryVariable("vocabulary");
-            $.post("user/findOne",{},function (data){
-                uid = data.uid;
-                load();
-            });
+            load();
             function display(data){
                 var lis = "";
                 for (var value of data) {
@@ -56,7 +53,12 @@
                         //data -> List(vocabulary)
                         display(data);
                     });
-                }else {
+                }else if(vocabulary == "All"){
+                    $.post("vocabulary/searchAllVocabularyByUid",{uid:uid},function (data){
+                        //data -> List(vocabulary)
+                        display(data);
+                    });
+                } else {
                     if(vocabulary != "选择需要查询的日期"){
                         $.post("vocabulary/searchVocabularyByUidAndDate",{uid:uid,date:vocabulary},function (data){
                             //data -> List(vocabulary)
@@ -68,12 +70,7 @@
                 }
 
             }
-
-
-
-            //获取参数
-            function getQueryVariable(variable)
-            {
+            function getQueryVariable(variable) {
                 var query = window.location.search.substring(1);
                 var vars = query.split("&");
                 for (var i=0;i<vars.length;i++) {
@@ -82,7 +79,6 @@
                 }
                 return(false);
             }
-
             $("#en_invisible").click(function (){
               $(".en_txt").fadeToggle();
               if($("#en_invisible").val() == "隐藏英文"){

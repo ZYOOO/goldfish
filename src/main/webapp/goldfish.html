@@ -20,17 +20,36 @@
                 uid = data.uid;
                 displayReward();
             });
+            $("#date").click(function (){
+                displayReward()
+            })
             function displayReward(){
                 $.post("goldfish/showReviewDateByUid",{uid:uid},function (data){
                     //data -> ReviewDate
                     var date_lis = "";
                     var search_lis = "<option>选择需要查询的日期</option>";
+                    var index = 0;
                     for (var value of data) {
-                        date_lis += "<li>"+value+"</li>";
+                         if(index < $("#input_reward").val()){
+                             index++;
+                            date_lis += "<li>"+value+"</li>";
+                         }
                         search_lis += "<option>"+value+"</option>"
                     }
                     $("#date").html(date_lis);
                     $("#search").html(search_lis);
+
+                    $("#input_reward").change(function (){
+                        var newIndex = 0;
+                        var lis = "";
+                        for (var value of data) {
+                            if( newIndex < $("#input_reward").val()){
+                                lis += "<li>"+value+"</li>";
+                            }
+                            newIndex++;
+                        }
+                        $("#date").html(lis);
+                    })
                 });
             }
             function displayVocabulary(data){
@@ -38,12 +57,21 @@
                 var err_lis = "";
                 for (var value  of data) {
                     voc_lis += "<li><span>"+value.word+"</span> &nbsp; <span>"+value.meaning+"</span></li>"
-                    if (value.e_count > 3){
+                    if (value.e_count > $("#forget_count").val()){
                         err_lis += "<li><span>"+value.word+"</span> &nbsp; <span>"+value.meaning+"</span></li>";
                     }
                 }
                 $("#vocabulary").html(voc_lis);
                 $("#difficulty").html(err_lis);
+                $("#forget_count").change(function (){
+                    var lis = "";
+                    for (var value of data) {
+                        if(value.e_count > $("#forget_count").val()){
+                            lis += "<li><span>"+value.word+"</span> &nbsp; <span>"+value.meaning+"</span></li>";
+                        }
+                    }
+                    $("#difficulty").html(lis);
+                })
             }
             //根据日期查询
             $("#search_btn").click(function (){
@@ -64,9 +92,21 @@
                     displayVocabulary(data);
                 });
             });
+            //查询全部单词
+            $("#searchAll_btn").click(function (){
+                $.post("vocabulary/searchAllVocabularyByUid",{uid:uid},function (data){
+                    vocabulary = "All";
+                    displayVocabulary(data);
+                });
+            });
+            //跳转garbage并且传输uid
+            $("#garbage").click(function (){
+                url = "garbage.html?uid="+uid;//此处拼接内容
+                window.location.href = url;
+            });
             //开始复习,传输参数跳转
             $("#review").click(function (){
-                url = "review.html?vocabulary="+vocabulary;//此处拼接内容
+                url = "review.html?vocabulary="+vocabulary+"&uid="+uid;//此处拼接内容
                 window.location.href = url;
             });
         });
@@ -76,14 +116,26 @@
     <!--引入头部-->
     <div id="header"></div>
     <div id="searchBar">
-            <select id="search">
-            </select>
-            <input type="button" class="btn" id="search_btn" value="查询" >
-            <input type="button" class="btn" id="i_btn" value="自动按照艾宾浩斯遗忘曲线查询">
+        <select id="search">
+        </select>
+        <input type="button" class="btn" id="search_btn" value="查询" >
+        <input type="button" class="btn" id="i_btn" value="自动按照艾宾浩斯遗忘曲线查询">
+        <input type="button" class="btn" id="searchAll_btn" value="查询全部" >
+        <input type="button" class="btn" id="garbage" value="已删除单词库" >
     </div>
     <div id="content">
         <div id="left">
-            <div class="title">近30天输入记录</div>
+            <div class="title">
+                近
+                <select id="input_reward">
+                    <option>30</option>
+                    <option>60</option>
+                    <option>120</option>
+                    <option>360</option>
+                    <option>720</option>
+                </select>
+                次输入记录
+            </div>
             <div>
                 <ul id="date">
 <!--                    <li>2021.02.02</li>-->
@@ -91,7 +143,18 @@
             </div>
         </div>
         <div id="right">
-            <div class="title">经常遗忘(3次以上)</div>
+            <div class="title">
+                经常遗忘(
+                <select id="forget_count">
+                    <option>3</option>
+                    <option>5</option>
+                    <option>10</option>
+                    <option>30</option>
+                    <option>50</option>
+                    <option>100</option>
+                </select>
+                次以上)
+            </div>
             <ul id="difficulty">
 <!--                <li><span>apple</span> <span>苹果</span></li>-->
             </ul>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Garbage</title>
+    <link rel="stylesheet" href="css/garbage.css" type="text/css">
+    <link rel="stylesheet" href="css/common.css" type="text/css">
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <!--导入angularJS文件-->
+    <script src="js/angular.min.js"></script>
+    <!--导入jquery-->
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+
+        $(function () {
+            var uid = getQueryVariable("uid");
+            display();
+
+            $("#delete").click(function () {
+                if(window.confirm('你确定要删除吗? 此次删除将无法找回 !')){
+                    $("input[class='del_box']:checked").each(function (i,n) {
+                        $.post("vocabulary/deleteVocabularyByVid", {vid: n.value}, function (data) {
+                            if (data) {
+                                $("#l"+n.value).remove();
+                            }
+                        });
+                    });
+                }else{
+                    alert("这都不敢删,是不是菜鸡~");
+                }
+
+            });
+            $("#selectAll").click(function () {
+                if ($("#selectAll").val() == "全选") {
+                    $(".del_box").show(250);
+                    $("#selectAll").attr("value", "取消全选");
+                    $(".del_box").attr("checked", true);
+                } else {
+                    $("#selectAll").attr("value", "全选");
+                    $(".del_box").attr("checked", false);
+                    $(".del_box").hide(250);
+                }
+            });
+            $("#recover").click(function (){
+                $("input[class='del_box']:checked").each(function (i,n) {
+                    $.post("vocabulary/recoverVocabularyByVid", {vid:n.value}, function (data) {
+                        if (data) {
+                            $("#l"+n.value).remove();
+                        }
+                    });
+                });
+            });
+            function getQueryVariable(variable) {
+                var query = window.location.search.substring(1);
+                var vars = query.split("&");
+                for (var i = 0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if (pair[0] == variable) {
+                        return pair[1];
+                    }
+                }
+                return (false);
+            }
+
+            function display() {
+                $.post("vocabulary/searchAllForgetByUid", {uid: uid}, function (data) {
+                    var lis = "";
+                    for (var voc of data) {
+                        lis += "<li id=\"l" + voc.vid + "\" value=\""+voc.vid+"\"> <input type=\"checkbox\" class=\"del_box\" value=\"" + voc.vid + "\" id=\"" + voc.vid + "\"><span class=\"en_txt\">" + voc.word + "</span><span class=\"cn_txt\">" + voc.meaning + "</span></li>\n"
+                    }
+                    $("#output").html(lis);
+                    $(".del_box").hide(250);
+                    $("li").each(function () {
+                        $(this).click(function () {
+                            if($("#"+this.value).is(":checked")){
+                                $("#"+this.value).hide(250);
+                                $("#"+this.value).attr("checked",false);
+                            }else{
+                                $("#"+this.value).show(250);
+                                $("#"+this.value).attr("checked",true);
+                            }
+                        })
+                    })
+                });
+            }
+
+        });
+
+
+    </script>
+
+</head>
+<body>
+<!--引入头部-->
+<div id="header"></div>
+<div id="content">
+    <!--  <div id="left"></div>-->
+    <!--  <div id="right"></div>-->
+    <div id="center">
+        <ul id="output">
+<!--            <li value="1" id="l1"> <input type="checkbox" class="del_box" id="1" value="1"><span class="en_txt">Apple1</span><span class="cn_txt">苹果</span></li>-->
+        </ul>
+        <div id="btns">
+            <input type="button" value="全选" class="btn" id="selectAll">
+            <input type="button" value="永久删除" class="btn" id="delete">
+            <input type="button" value="恢复" class="btn" id="recover">
+        </div>
+    </div>
+</div>
+<!--引入尾部-->
+<div id="footer"></div>
+<!--导入布局js，共享header和footer-->
+<script type="text/javascript" src="js/include.js"></script>
+</body>
+</html>

@@ -16,21 +16,35 @@ public class ScheduleDaoImpl implements ScheduleDao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
     @Override
     public List<Schedule> findByUid(int uid) {
-        String sql = "select * from tab_schedule where uid = ? order by t_start";
-        return template.query(sql,new BeanPropertyRowMapper<Schedule>(Schedule.class),uid);
+        List<Schedule> list = null;
+        try {
+            String sql = "select * from tab_schedule where uid = ? order by t_start";
+            list = template.query(sql,new BeanPropertyRowMapper<Schedule>(Schedule.class),uid);
+        }catch (Exception e){
+
+        }
+        return list;
     }
 
     @Override
     public boolean set(Schedule schedule) {
-        String sql = "insert into tab_schedule(uid,t_start,t_end,dailyMission) values(?,?,?,?)";
-        template.update(sql,schedule.getUid(),schedule.getT_start(),schedule.getT_end(),schedule.getDailyMission());
+        try {
+            String sql = "insert into tab_schedule(uid,t_start,t_end,dailyMission) values(?,?,?,?)";
+            template.update(sql,schedule.getUid(),schedule.getT_start(),schedule.getT_end(),schedule.getDailyMission());
+        }catch (Exception e){
+            return false;
+        }
         return true;
     }
 
     @Override
     public boolean deleteBySid(int sid) {
-        String sql = "delete from tab_schedule where sid = ?";
-        template.update(sql,sid);
+        try{
+            String sql = "delete from tab_schedule where sid = ?";
+            template.update(sql,sid);
+        }catch (Exception e){
+            return false;
+        }
         return true;
     }
 }

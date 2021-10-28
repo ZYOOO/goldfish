@@ -18,4 +18,12 @@ public interface VocabularyDao {
     public boolean unknown(int vid);
 
     public boolean changeStatus(int vid);
+
+    public List<Vocabulary> searchAllByUid(int uid);
+
+    public List<Vocabulary> searchAllForgetByUid(int uid);
+
+    public boolean deleteByVid(int vid);
+
+    public boolean recoverByVid(int vid);
 }

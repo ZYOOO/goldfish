@@ -30,8 +30,9 @@ public class MissionServlet extends BaseServlet {
         writeValue(flag,response);
     }
     public void deleteMissionByMid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        int mid = Integer.parseInt(request.getParameter("value"));
-        boolean flag = missionService.deleteMissionByMid(mid);
+        String mid = request.getParameter("value");
+        mid = mid.substring(1);
+        boolean flag = missionService.deleteMissionByMid(Integer.parseInt(mid));
         writeValue(flag,response);
     }
 }

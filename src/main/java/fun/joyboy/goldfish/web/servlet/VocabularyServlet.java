@@ -66,6 +66,23 @@ public class VocabularyServlet extends BaseServlet{
     }
     //真正从数据库删除
     public void deleteVocabularyByVid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-
+        int vid = Integer.parseInt(request.getParameter("vid"));
+        boolean flag = vocabularyService.deleteVocabularyByVid(vid);
+        writeValue(flag,response);
+    }
+    public void searchAllVocabularyByUid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        int uid = Integer.parseInt(request.getParameter("uid"));
+        List<Vocabulary> list  = vocabularyService.searchAllVocabularyByUid(uid);
+        writeValue(list,response);
+    }
+    public void searchAllForgetByUid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        int uid = Integer.parseInt(request.getParameter("uid"));
+        List<Vocabulary> list  = vocabularyService.searchAllForgetByUid(uid);
+        writeValue(list,response);
+    }
+    public void recoverVocabularyByVid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        int vid = Integer.parseInt(request.getParameter("vid"));
+        boolean flag = vocabularyService.recoverVocabularyByVid(vid);
+        writeValue(flag,response);
     }
 }

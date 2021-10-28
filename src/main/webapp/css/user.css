@@ -96,4 +96,9 @@ html {
 #end{
 	width: 50px;
 }
-
+li{
+	transition-duration: 0.4s;
+}
+li:hover{
+	background-color: dimgray;
+}

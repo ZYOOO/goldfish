@@ -18,4 +18,12 @@ public interface VocabularyService {
     public boolean unknown(int vid);
 
     public boolean changeStatus(int vid);
+
+    public List<Vocabulary> searchAllVocabularyByUid(int uid);
+
+    public List<Vocabulary> searchAllForgetByUid(int uid);
+
+    public boolean deleteVocabularyByVid(int vid);
+
+    public boolean recoverVocabularyByVid(int vid);
 }

@@ -3,9 +3,15 @@
     var uid;
     $(function (){
         $.get("user/findOne",{},function (data){
-            var msg = data.name;
-            uid = data.uid;
-            $("#span_username").html(msg);
+            if(data){
+                var msg = data.name;
+                uid = data.uid;
+                $("#span_username").html(msg);
+            }else{
+                location.href="login.html";
+                alert("请先登录");
+            }
+
         });
     })
 </script>

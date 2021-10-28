@@ -86,3 +86,11 @@ html{
     text-align: center;
     border-bottom: 2px solid white;
 }
+#input_reward{
+    /*height: 25px;*/
+    font-size: 23px;
+}
+#forget_count{
+    width: auto;
+    font-size: 23px;
+}
