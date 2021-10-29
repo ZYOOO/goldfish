@@ -16,6 +16,7 @@
         $(function (){
             var uid = getQueryVariable("uid");
             var vocabulary = getQueryVariable("vocabulary");
+            var height = 730;
             load();
             function display(data){
                 var lis = "";
@@ -101,6 +102,15 @@
                 }
             })
 
+            $("#change").click(function (){
+                if($("#change").val() == "切换手机版"){
+                     $("#content").css("height","1500px");
+                    $("#change").attr("value","切换电脑版");
+                }else{
+                    $("#content").css("height","730px");
+                    $("#change").attr("value","切换手机版");
+                }
+            })
         })
     </script>
 </head>
@@ -116,8 +126,9 @@
         </ul>
         <div id="btns">
             <input type="button" value="隐藏英文" class="btn" id="en_invisible">
-            <input type="button" value="完成复习" class="btn" id="finish">
             <input type="button" value="隐藏中文" class="btn" id="cn_invisible">
+            <input type="button" value="完成复习" class="btn" id="finish">
+            <input type="button" value="切换手机版" class="btn" id="change">
         </div>
     </div>
 </div>
