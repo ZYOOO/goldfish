@@ -3,6 +3,7 @@ package fun.joyboy.goldfish.util;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.security.Security;
 import java.util.Properties;
 
 /**
@@ -28,7 +29,13 @@ public final class MailUtils {
             props.put("mail.user", USER);
             //发件人的密码
             props.put("mail.password", PASSWORD);
-
+            //20端口被阿里云禁了,改端口试试
+            Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+            final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+            props.setProperty("mail.smtp.socketFactory.class",SSL_FACTORY);
+            props.setProperty("mail.smtp.socketFactory.fallback","false");
+            props.setProperty("mail.smtp.port","587");
+            props.setProperty("mail.smtp.socketFactory.port","587");
             // 构建授权信息，用于进行SMTP进行身份验证
             Authenticator authenticator = new Authenticator() {
                 @Override
