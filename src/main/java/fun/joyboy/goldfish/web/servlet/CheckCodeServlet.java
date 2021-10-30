@@ -27,8 +27,8 @@ public class CheckCodeServlet extends HttpServlet {
 		//参数一：长
 		//参数二：宽
 		//参数三：颜色
-		int width = 80;
-		int height = 30;
+		int width = 100;
+		int height = 35;
 		BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
 		
 		//获取画笔
@@ -46,9 +46,9 @@ public class CheckCodeServlet extends HttpServlet {
 		//设置画笔颜色为黄色
 		g.setColor(Color.YELLOW);
 		//设置字体的小大
-		g.setFont(new Font("黑体",Font.BOLD,24));
+		g.setFont(new Font("黑体",Font.BOLD,28));
 		//向图片上写入验证码
-		g.drawString(checkCode,15,25);
+		g.drawString(checkCode,12,28);
 		
 		//将内存中的图片输出到浏览器
 		//参数一：图片对象

@@ -36,6 +36,7 @@ li{
     margin-top: 8px;
     margin-bottom: 2px;
     color: black;
+    font-size: 34px;
     transition-duration: 0.4s;
 }
 li:hover{
@@ -43,12 +44,12 @@ li:hover{
 }
 .en_txt{
     color: white;
-    font-size: 20px;
+    font-size: 32px;
     margin-right: 40px;
 }
 .cn_txt{
     color: white;
-    font-size: 20px;
+    font-size: 30px;
     margin-right: 20px;
 }
 #btns{
@@ -65,21 +66,10 @@ li:hover{
     color: white;
     border: 1px solid white;
 }
-.error_btn{
-    font-size:18px;
-    background-color: black;
-    color: white;
-    border: 1px solid white;
-    transition-duration: 0.4s;
-}
-.error_btn:hover {
-    background-color: white;
-    color: black;
-}
-
 .del_btn{
-    font-size: 18px;
+    font-size: 28px;
     background-color: black;
+    float: right;
     color: white;
     border: 1px solid white;
     transition-duration: 0.4s;
@@ -88,3 +78,17 @@ li:hover{
     background-color: white;
     color: black;
 }
+
+.error_btn{
+    font-size:28px;
+    background-color: black;
+    color: white;
+    float: right;
+    border: 1px solid white;
+    transition-duration: 0.4s;
+}
+.error_btn:hover {
+    background-color: white;
+    color: black;
+}
+

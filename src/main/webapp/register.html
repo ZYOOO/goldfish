@@ -28,13 +28,26 @@
         function checkUsername(){
             var username = $("#username").val();
             var reg_username = /^\w{8,20}$/;
-            var flag = reg_username.test(username);
-            if(flag){
+            var flag1 = reg_username.test(username);
+            var flag2 = true;
+            if(flag1){
                 $("#username").css("border","");
+                $.post("user/checkUsername",{username:username},function (data){
+                    if(data.flag){
+                        flag2 = true;
+                        $("#errorMsg").html(data.errorMsg);
+                        $("#username").css("border","");
+                    }else{
+                        flag2 = false;
+                        $("#errorMsg").html(data.errorMsg);
+                        $("#username").css("border","1px solid red");
+                    }
+                    return flag2;
+                });
             }else{
                 $("#username").css("border","1px solid red");
             }
-            return flag;
+            return flag1;
         }
         function checkPassword(){
             var password = $("#password").val();
@@ -48,6 +61,19 @@
             return flag;
         }
 
+        function checkConfirmPassword(){
+            var flag;
+            if($("#confirmPassword").val() == $("#password").val()){
+                flag = true;
+                $("#errorMsg").html("");
+                $("#confirmPassword").css("border","");
+            }else{
+                flag = false;
+                $("#errorMsg").html("两次输入的密码不一致");
+                $("#confirmPassword").css("border","1px solid red");
+            }
+            return flag;
+        }
         function checkEmail(){
             var email = $("#email").val();
             var reg_email = /^\w+@\w+\.\w+$/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
@@ -148,7 +174,7 @@
             //表单提交时调用所有校验方法
             $("#registerForm").submit(function (){
                 //发送数据到服务器 ajax； $(this).serialize()将表单对象转成jQuery调用serialize提交表单数据
-                if(checkUsername() && checkPassword() && checkEmail() && checkName() && checkTelephone() && checkBirthday() && checkEmailCheck() && checkCheck()){
+                if(checkUsername() && checkPassword() && checkConfirmPassword() && checkEmail() && checkName() && checkTelephone() && checkBirthday() && checkEmailCheck() && checkCheck()){
                     $.post("user/register",$(this).serialize(),function (data){
                         //处理服务器响应的数据 data
                         if(data.flag){
@@ -157,10 +183,7 @@
                         }else{
                             $("#errorMsg").html(data.errorMsg);
                         }
-
-
                     });
-
                 }
                 //跳转页面
                 return false;
@@ -170,6 +193,7 @@
             //组件失去焦点时，调用对应的校验方法
             $("#username").blur(checkUsername);
             $("#password").blur(checkPassword);//注意这里的checkPassword不要加括号
+            $("#confirmPassword").blur(checkConfirmPassword);
             $("#email").blur(checkEmail);
             $("#name").blur(checkName);
             $("#telephone").blur(checkTelephone);
@@ -207,7 +231,15 @@
                             <label for="password">密码</label>
                         </td>
                         <td class="td_right">
-                            <input type="text" id="password" name="password" placeholder="请输入密码,8~20位" autocomplete="off">
+                            <input type="password" id="password" name="password" placeholder="请输入密码,8~20位" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="password">确认密码</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="请再次输入密码" autocomplete="off">
                         </td>
                     </tr>
                     <tr>

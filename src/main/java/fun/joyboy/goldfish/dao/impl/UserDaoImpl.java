@@ -14,7 +14,14 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
     @Override
     public User findByUsername(String username) {
-        return null;
+        User user = null;
+        try{
+            String sql = "select * from user where username = ?";
+            user = template.queryForObject(sql,new BeanPropertyRowMapper<User>(User.class),username);
+        }catch (Exception e){
+            System.out.println("未查找到此用户");
+        }
+        return user;
     }
 
     @Override

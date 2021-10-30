@@ -160,13 +160,23 @@ public class UserServlet extends BaseServlet{
         //设置content-type
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(json);
-
-
     }
 
     public void findOne(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Object user = request.getSession().getAttribute("user");
         writeValue(user,response);
+    }
+    public void checkUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        String username = request.getParameter("username");
+        ResultInfo info = new ResultInfo();
+        if(userService.findUserByUsername(username) != null){
+            info.setFlag(false);
+            info.setErrorMsg("该用户名已存在");
+        }else{
+            info.setFlag(true);
+            info.setErrorMsg("");
+        }
+        writeValue(info,response);
     }
 }
 

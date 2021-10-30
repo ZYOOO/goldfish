@@ -9,4 +9,5 @@ import fun.joyboy.goldfish.domain.User;
 public interface UserService {
     User login(User user);
     boolean register(User user);
+    User findUserByUsername(String username);
 }

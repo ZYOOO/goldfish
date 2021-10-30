@@ -12,37 +12,66 @@
     <!--    导入自己的center.css-->
     <link type="text/css" rel="stylesheet" href="css/login.css">
     <link type="text/css" rel="stylesheet" href="css/common.css">
-    <title>Come&nbsp;on</title>
     <script>
-        function checkCheck(){
+        function checkCheck() {
             var check = $("#check").val();
             var reg_check = /\S/;//\w表示字符 \w+表示多个字符 \.转义符号表示. /^开始 $/结束
             var flag = reg_check.test(check);
-            if(flag){
-                $("#check").css("border","");
-            }else{
-                $("#check").css("border","1px solid red");
+            if (flag) {
+                $("#check").css("border", "");
+            } else {
+                $("#check").css("border", "1px solid red");
             }
             return flag;
         }
 
-        $(function (){
-            $("#btn_sub").click(function(){
+        $(function () {
+            $("#btn_sub").click(function () {
                 var flag = checkCheck();
-                if(flag){
-                    $.post("user/login",$("#loginForm").serialize(),function (data){
-                        if(data.flag){
-                            location.href="user.html";
-                        }else{
+                if (flag) {
+                    if (storage["password"] == undefined){
+                        store();
+                    }
+                    $.post("user/login", $("#loginForm").serialize(), function (data) {
+                        if (data.flag) {
+                            location.href = "user.html";
+                        } else {
                             $("#errorMsg").html(data.errorMsg);
                         }
                     });
                 }
             });
             $("#check").blur(checkCheck);
+            if (window.localStorage) {
+                var storage = window.localStorage;
+                var name = storage["name"];
+                var pass = storage["password"];
+                $("input[name=username]").val(name);
+                $("input[name=password]").val(pass);
+            }
         });
 
+        // 获取值，然后存起来
+        function store() {
+            if (window.localStorage) {
+                var storage = window.localStorage;
+                // 判断是否要保存密码
+                if (confirm("是否保存密码")) {
+                    var name = $("input[name=username]").val();
+                    var pass = $("input[name=password]").val();
+                    //存值
+                    storage.setItem("name", name);
+                    storage.setItem("password", pass);
+                } else {
+                    //消除值
+                    storage.removeItem("password");//删除
+                    // storage.clear();   //全部清除
+                }
+            }
+        }
+
     </script>
+    <title>Come&nbsp;on</title>
 </head>
 <body>
 <div class="login-box" id="center-in-center">
@@ -52,7 +81,7 @@
     <div class="login_inner">
         <!--登录错误提示消息-->
         <div id="errorMsg" class="alert alert-danger"></div>
-        <form id="loginForm" action="" autocomplete="on"  method="post" accept-charset="utf-8">
+        <form id="loginForm" action="" autocomplete="on" method="post" accept-charset="utf-8">
             <input type="hidden" name="action" value="login"/>
             <input name="username" type="text" placeholder="请输入账号" autocomplete="on">
             <input name="password" type="password" placeholder="请输入密码" autocomplete="off">
@@ -70,7 +99,7 @@
                 <button type="button" id="btn_sub" class="btn">登录</button>
 <!--                <div class="auto_login">-->
 <!--                    <input type="checkbox" name="" class="checkbox">-->
-<!--                    <span>自动登录</span>-->
+<!--                    <span>记住账号密码</span>-->
 <!--                </div>-->
             </div>
         </form>

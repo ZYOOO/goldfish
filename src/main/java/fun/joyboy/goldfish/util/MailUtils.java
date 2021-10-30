@@ -74,7 +74,8 @@ public final class MailUtils {
     }
 
     public static void main(String[] args) throws Exception { // 做测试用
-        MailUtils.sendMail("zyooooo@126.com","你好，这是一封测试邮件，无需回复。","测试邮件");
+        String content = "邮箱激活码为:"+UuidUtil.getUuid();
+        MailUtils.sendMail("2698745660@qq.com",content,"测试邮件");
         System.out.println("发送成功");
     }
 

@@ -20,8 +20,9 @@ public class EmailCodeServlet extends HttpServlet {
         response.setHeader("cache-control","no-cache");
         response.setHeader("expires","0");
         String email = request.getParameter("email");
-        String content = UuidUtil.getUuid();
-        request.getSession().setAttribute("EMAILCODE_SERVER",content);
+        String emailcode = UuidUtil.getUuid();
+        request.getSession().setAttribute("EMAILCODE_SERVER",emailcode);
+        String content = "邮箱激活码:"+emailcode;
         MailUtils.sendMail(email,content,"GOLDFISH注册激活码");
     }
 
