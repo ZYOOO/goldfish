@@ -10,16 +10,56 @@
     <!--导入angularJS文件-->
     <script src="js/angular.min.js"></script>
     <!--导入jquery-->
+    <script src="js/getParameter.js" type="text/javascript"></script>
     <script src="js/jquery-3.3.1.js"></script>
     <script type="text/javascript">
         //事件
         $(function (){
             var uid;
+            var storage = window.localStorage;
             $.post("user/findOne",{},function (data){
                 uid = data.uid;
                 displayMission();
                 displaySchedule();
             });
+            //到时间提醒任务
+            function alertMission(){
+                $(".start").each(function (){
+                    var start = $(this);
+                    var end = $("#"+start.attr("id").replace(/start/ig,'end'));
+                    var mission = $("#"+start.attr("id").replace(/start/ig,'sMission'));
+                    var currentBigger = compareBig(start.html()) == true ? false : true;
+                    var currentSmaller = compareBig(end.html()) == true ? true : false;
+                    if(currentBigger && currentSmaller && (mission.html() != storage["last"])){
+                        alert("赶快执行你的任务吧 \n"+mission.html());
+                        storage.setItem("last",mission.html());
+                    }else if(currentBigger && currentSmaller && getParameter("flag") == 1){
+                        alert("赶快执行你的任务吧 \n"+mission.html());
+                        storage.setItem("last",mission.html());
+                    }
+                });
+                setTimeout(setTimeout,1000*60);
+            }
+            //进来的大 返回true 进来的小 返回false
+            function compareBig(time){
+                //切割字符串转换为数字与当前时间的小时和分钟对比
+                var hour = time.substr(0,2);
+                var min = time.substr(3,2)
+                var currentTime = new Date();
+                if(hour > currentTime.getHours()){
+                    return true
+                }else if(hour == currentTime.getHours()){
+                    if(min >= currentTime.getMinutes()){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }
+
+            //渲染任务表
             function displayMission(){
                 $.post("mission/findMissionByUid",{uid:uid},function (data){
                     var lis = "";
@@ -42,15 +82,24 @@
                     })
                 });
             }
+            //渲染时间安排表
             function displaySchedule(){
                 $.post("schedule/findScheduleByUid",{uid:uid},function (data){
                     var lis = "";
                     for (var value of data) {
-                        var li = "<li id=\"ls" + value.sid + "\" value=\""+value.sid+"\"><input type=\"checkbox\" class=\"schedule_box\" value=\"s" + value.sid + "\" id=\"s" + value.sid + "\">"+value.t_start+'~'+value.t_end+'&nbsp;'+value.dailyMission+"</li>"
+                        var li = "<li id=\"ls" + value.sid + "\" value=\""+value.sid+"\">" +
+                            "<input type=\"checkbox\" class=\"schedule_box\" value=\"s" + value.sid + "\" id=\"s" + value.sid + "\">" +
+                            "<span class='start' id =\""+value.sid+"start\">"+value.t_start+"</span>" +
+                            "~" +
+                            "<span class='end' id=\""+value.sid+"end\">"+value.t_end+"</span>" +
+                            "&nbsp;" +
+                            "<span class='sMission' id=\""+value.sid+"sMission\">"+value.dailyMission+"</span>" +
+                            "</li>";
                         lis += li;
                     }
                     $("#schedule").html(lis);
                     $(".schedule_box").hide(250);
+                    alertMission();
                     $("li").each(function () {
                         $(this).click(function () {
                             if($("#s"+this.value).is(":checked")){
@@ -64,6 +113,7 @@
                     })
                 });
             }
+            //设置任务
             $("#settingMission").click(function (){
                 if($("#txt_Mission").val() != 0){
                     $.post("mission/setMission",{uid:uid,mission:$("#txt_Mission").val().toString()},function (data){
@@ -78,7 +128,7 @@
                     alert("请输入要设置的任务")
                 }
             });
-
+            //删除任务
             $("#deleteMission").click(function (){
                 $("input[class='mis_box']:checked")
                     .each(function(i,n){
@@ -90,7 +140,7 @@
                     });
                 });
             })
-
+            //设置时间安排
             $("#settingSchedule").click(function (){
                 if($("#txt_Schedule").val() != 0 && $("#start").val() != 0 && $("#end").val() != 0) {
                     $.post("schedule/setSchedule", {
@@ -112,7 +162,7 @@
                     alert("请输入完整信息")
                 }
             });
-
+            //删除选择的时间安排
             $("#deleteSchedule").click(function (){
                 $("input[class='schedule_box']:checked")
                     .each(function(i,n){
@@ -128,16 +178,19 @@
 
         //样式事件
         $(function () {
+            //选择任务
             $("#selectMission").click(function () {
                 if ($("#selectMission").val() == "选择") {
                     $(".mis_box").toggle(250);
                 }
             });
+            //选择时间安排
             $("#selectSchedule").click(function () {
                 if ($("#selectSchedule").val() == "选择") {
                     $(".schedule_box").toggle(250);
                 }
             });
+            //选择所有时间安排
             $("#selectAllSchedule").click(function (){
                 if ($("#selectAllSchedule").val() == "全选"){
                     $(".schedule_box").show(250);
@@ -151,6 +204,7 @@
 
                 }
             })
+            //选择所有任务
             $("#selectAllMission").click(function (){
                 if ($("#selectAllMission").val() == "全选"){
                     $(".mis_box").show(250);

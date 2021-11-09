@@ -81,20 +81,27 @@
                 return(false);
             }
             $("#en_invisible").click(function (){
-              $(".en_txt").fadeToggle();
               if($("#en_invisible").val() == "隐藏英文"){
+                  $(".en_txt").fadeOut("slow");
                   $("#en_invisible").attr("value","显示英文");
               }else{
+                  $(".en_txt").fadeIn("slow");
                   $("#en_invisible").attr("value","隐藏英文");
               }
             })
             $("#cn_invisible").click(function (){
-                $(".cn_txt").fadeToggle();
                 if($("#cn_invisible").val() == "隐藏中文"){
+                    $(".cn_txt").fadeOut("slow");
                     $("#cn_invisible").attr("value","显示中文");
                 }else{
+                    $(".cn_txt").fadeIn("slow");
                     $("#cn_invisible").attr("value","隐藏中文");
                 }
+            })
+            $("#output li").each(function (){
+                $(this).click(function (){
+                    $(".cn_txt").fadeToggle();
+                })
             })
             $("#finish").click(function (){
                 if (!alert("What everyone you can do, just do it!")) {
@@ -122,7 +129,7 @@
 <!--    <div id="right"></div>-->
     <div id="center">
         <ul id="output">
-<!--            <li><span class="en_txt">Apple</span><span class="cn_txt">苹果</span> <input type="button" class="error_btn"  value="删除"> <input type="button" class="del_btn" value="不会"></li>-->
+            <li><span class="en_txt">Apple</span><span class="cn_txt">苹果</span> <input type="button" class="error_btn"  value="删除"> <input type="button" class="del_btn" value="不会"></li>
         </ul>
         <div id="btns">
             <input type="button" value="隐藏英文" class="btn" id="en_invisible">

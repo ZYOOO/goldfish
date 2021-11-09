@@ -29,7 +29,7 @@
                 if (flag){
                     var ens = $(".en_txt");
                     if(ens[ens.length-2].value != 0){
-                        var li = "<li><input class=\"en_txt\" name=\"en"+(++i)+"\" type=\"text\"><input class=\"cn_txt\" name=\"cn"+(++i)+"\" type=\"text\"></li>"
+                        var li = "<li><input class=\"en_txt\" name=\"en"+(++i)+"\" type=\"text\"><input class=\"cn_txt\" name=\"cn"+i+"\" type=\"text\"></li>"
                         $("#input_ul").append(li);
                     }
                     setTimeout(add,100);

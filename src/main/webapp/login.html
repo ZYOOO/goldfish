@@ -34,7 +34,7 @@
                     }
                     $.post("user/login", $("#loginForm").serialize(), function (data) {
                         if (data.flag) {
-                            location.href = "user.html";
+                            location.href = "user.html?flag=1";
                         } else {
                             $("#errorMsg").html(data.errorMsg);
                         }
