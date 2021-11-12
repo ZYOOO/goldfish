@@ -16,4 +16,9 @@ public class RewardServiceImpl implements RewardService {
     public List<String> findRewardByUid(int uid) {
         return rewardDao.findByUid(uid);
     }
+
+    @Override
+    public void addRewardByUid(int uid, String date) {
+        rewardDao.addByUid(uid,date);
+    }
 }

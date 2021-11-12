@@ -34,4 +34,20 @@ public class RewardDaoImpl implements RewardDao {
         return list;
 
     }
+
+    @Override
+    public void addByUid(int uid, String date) {
+        try {
+            String sql1 = "SELECT COUNT(*) FROM tab_date WHERE uid = ? AND r_date = ?";
+            int count = template.queryForObject(sql1,Integer.class,uid,date);
+            if(count > 0){
+                return;
+            }
+            //添加复习日期
+            String sql2 = "insert into tab_date(uid,r_date) values(?,?)";
+            template.update(sql2, uid,date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

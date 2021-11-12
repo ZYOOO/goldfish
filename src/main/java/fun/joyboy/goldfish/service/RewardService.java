@@ -8,4 +8,5 @@ import java.util.List;
  */
 public interface RewardService {
     public List<String> findRewardByUid(int uid);
+    public void addRewardByUid(int uid,String date);
 }

@@ -21,14 +21,10 @@ public class VocabularyDaoImpl implements VocabularyDao {
 
     @Override
     public boolean add(Vocabulary vocabulary) {
-
         try {
             //添加单词
             String sql1 = "insert into vocabulary(uid,c_date,word,meaning) values(?,?,?,?)";
-            //添加复习日期
-            String sql2 = "insert into tab_date(uid,r_date) values(?,?)";
             template.update(sql1, vocabulary.getUid(), vocabulary.getC_date(), vocabulary.getWord(), vocabulary.getMeaning());
-            template.update(sql2, vocabulary.getUid(),vocabulary.getC_date());
         } catch (DataAccessException e) {
             e.printStackTrace();
             return false;

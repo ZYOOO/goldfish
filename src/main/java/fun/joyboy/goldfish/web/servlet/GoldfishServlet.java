@@ -12,7 +12,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/goldfish/*")
+@WebServlet("/inputReward/*")
 public class GoldfishServlet extends BaseServlet {
     private RewardService rewardService= new RewardServiceImpl();
     public void showReviewDateByUid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{

@@ -8,4 +8,5 @@ import java.util.List;
  */
 public interface RewardDao {
     public List<String> findByUid(int uid);
+    public void addByUid(int uid,String date);
 }

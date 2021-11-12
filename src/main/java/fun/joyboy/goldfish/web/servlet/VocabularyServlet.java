@@ -4,7 +4,9 @@ package fun.joyboy.goldfish.web.servlet; /**
  */
 
 import fun.joyboy.goldfish.domain.Vocabulary;
+import fun.joyboy.goldfish.service.RewardService;
 import fun.joyboy.goldfish.service.VocabularyService;
+import fun.joyboy.goldfish.service.impl.RewardServiceImpl;
 import fun.joyboy.goldfish.service.impl.VocabularyServiceImpl;
 
 import javax.servlet.*;
@@ -19,6 +21,7 @@ import java.util.List;
 @WebServlet("/vocabulary/*")
 public class VocabularyServlet extends BaseServlet{
     private VocabularyService vocabularyService = new VocabularyServiceImpl();
+    private RewardService rewardService = new RewardServiceImpl();
     public void addVocabulary(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         int i = 1;
         int uid = Integer.parseInt(request.getParameter("uid"));
@@ -27,6 +30,7 @@ public class VocabularyServlet extends BaseServlet{
         Date date_now = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date =  dateFormat.format(date_now);
+        rewardService.addRewardByUid(uid,date);
         while (en != null && cn != null && en != "null" && cn != ""){
             Vocabulary vocabulary = new Vocabulary();
             vocabulary.setUid(uid);

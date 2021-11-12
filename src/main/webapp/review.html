@@ -9,7 +9,7 @@
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <!--导入angularJS文件-->
-    <script src="js/angular.min.js"></script>
+<!--    <script src="js/angular.min.js"></script>-->
     <!--导入jquery-->
     <script src="js/jquery-3.3.1.js"></script>
     <script>
@@ -46,6 +46,13 @@
                         });
                     });
                 })
+                //单击行隐藏中文轮询
+                $("#output li").each(function (){
+                    $(this).click(function (){
+                        $(this).find(".cn_txt").fadeToggle();
+                    })
+                })
+
             }
             //根据data渲染
             function load(){
@@ -98,11 +105,7 @@
                     $("#cn_invisible").attr("value","隐藏中文");
                 }
             })
-            $("#output li").each(function (){
-                $(this).click(function (){
-                    $(".cn_txt").fadeToggle();
-                })
-            })
+
             $("#finish").click(function (){
                 if (!alert("What everyone you can do, just do it!")) {
                     location.href="goldfish.html";
@@ -129,7 +132,7 @@
 <!--    <div id="right"></div>-->
     <div id="center">
         <ul id="output">
-            <li><span class="en_txt">Apple</span><span class="cn_txt">苹果</span> <input type="button" class="error_btn"  value="删除"> <input type="button" class="del_btn" value="不会"></li>
+<!--            <li><span class="en_txt">Apple</span><span class="cn_txt">苹果</span> <input type="button" class="error_btn"  value="删除"> <input type="button" class="del_btn" value="不会"></li>-->
         </ul>
         <div id="btns">
             <input type="button" value="隐藏英文" class="btn" id="en_invisible">

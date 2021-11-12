@@ -9,7 +9,7 @@
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <!--导入angularJS文件-->
-    <script src="js/angular.min.js"></script>
+<!--    <script src="js/angular.min.js"></script>-->
     <!--导入jquery-->
     <script src="js/jquery-3.3.1.js"></script>
     <script>
@@ -24,7 +24,7 @@
                 displayReward()
             })
             function displayReward(){
-                $.post("goldfish/showReviewDateByUid",{uid:uid},function (data){
+                $.post("inputReward/showReviewDateByUid",{uid:uid},function (data){
                     //data -> ReviewDate
                     var date_lis = "";
                     var search_lis = "<option>选择需要查询的日期</option>";

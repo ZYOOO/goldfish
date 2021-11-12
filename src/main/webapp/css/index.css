@@ -35,3 +35,28 @@ html{
     font-size: 30px;
     text-align: center;
 }
+#tail{
+    position: absolute;
+    top: 97%;
+    width: 99%
+}
+#left{
+    float: left;
+    width: 25%;
+}
+#right{
+    float: right;
+    width: 25%;
+}
+#center{
+    text-align: center;
+    width: 49.8%;
+    margin: 0 auto;
+}
+a{
+    text-decoration:none;
+    color: lightslategrey;
+}
+a:hover{
+    text-decoration:underline
+}
